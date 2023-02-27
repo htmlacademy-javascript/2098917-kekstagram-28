@@ -1,12 +1,6 @@
 //Проверка длины строки
 function lengthCheck (string, limit) {
-  let resultOne = '';
-  if(string.length <= limit) {
-    resultOne = 'Результат: true - строка проходит по длине';
-  } else {
-    resultOne = 'Результат: false — строка не проходит';
-  }
-  return resultOne;
+  return string.length <= limit;
 }
 
 lengthCheck('проверяемая строка', 20);
@@ -18,19 +12,13 @@ function palindrom (string) {
     wordBackwards += string[i];
   }
   const stringTwo = wordBackwards.toLowerCase();
-  let resultTwo = '';
-  if(stringTwo === string.toLowerCase()) {
-    resultTwo = 'Это палиндром!';
-  } else {
-    resultTwo = 'Это не палиндром!';
-  }
-  return resultTwo;
+  return stringTwo === string.toLowerCase();
 }
 
 palindrom ('Топот');
 
 
-//Палиндром с пробелами
+//Палиндром с пробелами. Он работает и с обычными словами тоже.
 function palindromWithBreaks (string) {
   const stringNoBreaks = string.replaceAll(' ', '');
   let wordBackwards = '';
@@ -38,13 +26,7 @@ function palindromWithBreaks (string) {
     wordBackwards += stringNoBreaks[i];
   }
   const stringTwo = wordBackwards.toLowerCase();
-  let resultThree = '';
-  if(stringTwo === stringNoBreaks.toLowerCase()) {
-    resultThree = 'Это палиндром!';
-  } else {
-    resultThree = 'Это не палиндром!';
-  }
-  return resultThree;
+  return stringTwo === stringNoBreaks.toLowerCase();
 }
 
 palindromWithBreaks ('А роза упала на лапу Азора');
@@ -66,29 +48,12 @@ pickOutNumbers ('ECMAScript 2022');
 
 
 //Формирование строки
-function formString(originalString, total, additions) {
-  let resultFour = '';
-  const basicLength = parseInt(originalString.length, 10);
-  if (basicLength >= total) {
-    resultFour = originalString;
-  } else if (basicLength < total) {
-    const symbolsToAdd = total - parseInt(originalString.length, 10);
-    if (parseInt(additions.length, 10) > symbolsToAdd) {
-      let addedSyms = '';
-      for (let i = 0; i < symbolsToAdd; i++) {
-        addedSyms += additions[i];
-      }
-      resultFour = addedSyms + originalString;
-    } else if (parseInt(additions.length, 10) <= symbolsToAdd) {
-      const symDifference = symbolsToAdd - parseInt(additions.length, 10);
-      let addedSymsToAddedSyms = '';
-      for (let i = 0; i < symDifference; i++) {
-        addedSymsToAddedSyms += additions[0];
-      }
-      resultFour = addedSymsToAddedSyms + additions + originalString;
-    }
-  }
-  return resultFour;
-}
 
-formString('qwerty', 4, '0');
+const myPadStart = (string, minLength, pad) => {
+  const actualPad = minLength - string.length;
+  return actualPad <= 0
+    ? string
+    : pad.slice(0, actualPad % pad.length) + pad.repeat(actualPad / pad.length) + string;
+};
+
+myPadStart('q', 4, 'werty');
