@@ -43,24 +43,27 @@ const URL_COUNT = 25;
 const COMMENT_ID = 200;
 const COMMENT_COUNT = 10;
 const PHOTO_ID = 25;
+const MIN_LIKES = 15;
+const MAX_LIKES = 200;
 
-const getRandomInteger = (a, b) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
+const getRandomInteger = (min, max) => {
+  const lower = Math.ceil(Math.min(min, max));
+  const upper = Math.floor(Math.max(min, max));
   const result = Math.random() * (upper - lower + 1) + lower;
   return Math.floor(result);
 };
 
-function createUniqueId (a, b) {
+function createUniqueId (min, max) {
   const idArray = [];
 
   return function () {
-    let singleId = getRandomInteger(a, b);
-    if (idArray.length >= (b - a + 1)) {
+    let singleId = getRandomInteger(min, max);
+    if (idArray.length >= (max - min + 1)) {
+      console.error(`Перебраны все числа из диапазона от ${min} до ${max}`);
       return null;
     }
     while(idArray.includes(singleId)) {
-      singleId = getRandomInteger(a, b);
+      singleId = getRandomInteger(min, max);
     }
     idArray.push(singleId);
     return singleId;
@@ -86,10 +89,9 @@ const createPhotoCard = () => {
     photoId: photoId(),
     photoUrl: `photos/${photoUrl()}.jpg`,
     photoDescription: getRandomArrayElement(PHOTO_DESCRIPTIONS),
-    photoLikes: getRandomInteger(15, 200),
+    photoLikes: getRandomInteger(MIN_LIKES, MAX_LIKES),
     photoComments: Array.from({length: getRandomCommentCount}, createComment),
   };
 };
 
 const photoSet = Array.from({length: PHOTO_ID}, createPhotoCard);
-photoSet();
