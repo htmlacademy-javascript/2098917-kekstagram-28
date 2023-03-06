@@ -59,7 +59,6 @@ function createUniqueId (min, max) {
   return function () {
     let singleId = getRandomInteger(min, max);
     if (idArray.length >= (max - min + 1)) {
-      console.error(`Перебраны все числа из диапазона от ${min} до ${max}`);
       return null;
     }
     while(idArray.includes(singleId)) {
@@ -95,3 +94,4 @@ const createPhotoCard = () => {
 };
 
 const photoSet = Array.from({length: PHOTO_ID}, createPhotoCard);
+photoSet();
