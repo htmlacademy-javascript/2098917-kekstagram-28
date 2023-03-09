@@ -1,5 +1,5 @@
-import {getRandomArrayElement} from "../js/util.js";
-import {commentId} from "../js/data.js";
+import {getRandomArrayElement} from './util.js';
+import {commentId} from './data.js';
 
 const COMMENT_AVATARS = [
   'img/avatar-1.svg',

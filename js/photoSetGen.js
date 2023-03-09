@@ -1,8 +1,8 @@
-import { photoId } from "../js/data.js";
-import { photoUrl } from "../js/data.js";
-import {getRandomInteger} from "../js/util.js";
-import { getRandomArrayElement } from "../js/util.js";
-import { createComment } from "../js/createComment.js";
+import { photoId } from './data.js';
+import { photoUrl } from './data.js';
+import {getRandomInteger} from './util.js';
+import { getRandomArrayElement } from './util.js';
+import { createComment } from './createComment.js';
 
 const PHOTO_DESCRIPTIONS = [
   'Выложила новую работу, оцените! #рисунок #акварель',

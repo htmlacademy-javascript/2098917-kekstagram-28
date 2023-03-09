@@ -1,4 +1,4 @@
-import { createUniqueId } from "../js/util.js";
+import { createUniqueId } from './util.js';
 
 const URL_COUNT = 25;
 const COMMENT_ID = 200;

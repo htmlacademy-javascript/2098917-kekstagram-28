@@ -1,4 +1,4 @@
-import { createPhotoCard } from "../js/photoSetGen.js";
+import { createPhotoCard } from './photoSetGen.js';
 
 const PHOTO_ID = 25;
 
