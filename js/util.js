@@ -23,6 +23,4 @@ function createUniqueId (min, max) {
   };
 }
 
-export {createUniqueId};
-export {getRandomInteger};
-export {getRandomArrayElement};
+export {createUniqueId, getRandomInteger, getRandomArrayElement};
