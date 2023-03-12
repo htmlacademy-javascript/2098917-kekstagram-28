@@ -2,6 +2,13 @@ import { getRandomInteger } from './util.js';
 import { getRandomArrayElement } from './util.js';
 import { createUniqueId } from './util.js';
 
+const URL_COUNT = 25;
+const COMMENT_ID = 200;
+const PHOTO_ID = 25;
+const COMMENT_COUNT = 10;
+const MIN_LIKES = 15;
+const MAX_LIKES = 200;
+
 const COMMENT_AVATARS = [
   'img/avatar-1.svg',
   'img/avatar-2.svg',
@@ -32,10 +39,6 @@ const COMMENT_NAMES = [
   'Лиза',
 ];
 
-const URL_COUNT = 25;
-const COMMENT_ID = 200;
-const PHOTO_ID = 25;
-
 const photoId = createUniqueId(1, PHOTO_ID);
 const photoUrl = createUniqueId(1, URL_COUNT);
 const commentId = createUniqueId(1, COMMENT_ID);
@@ -57,10 +60,6 @@ const PHOTO_DESCRIPTIONS = [
   'Воскресный завтрак #блинчики',
   'Давно не выкладывала своих фото #себяшка',
 ];
-
-const COMMENT_COUNT = 10;
-const MIN_LIKES = 15;
-const MAX_LIKES = 200;
 
 const createPhotoCard = () => {
   const getRandomCommentCount = getRandomInteger(1, COMMENT_COUNT);
