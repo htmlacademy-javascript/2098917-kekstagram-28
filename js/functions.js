@@ -57,3 +57,18 @@ const myPadStart = (string, minLength, pad) => {
 };
 
 myPadStart('q', 4, 'werty');
+
+
+const findSmallestInt = function (args) {
+  const currentIndex = 0;
+  let minValue = args[currentIndex];
+  for (let i = currentIndex + 1; i <= args.length - 1; i++) {
+    if (args[i] < minValue) {
+      minValue = args[i];
+    }
+  }
+  return minValue;
+};
+
+const minNo = findSmallestInt([34, 15, 88, 2]);
+console.log(minNo);
