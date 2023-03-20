@@ -73,6 +73,5 @@ const createPhotoCard = () => {
 };
 
 const photoSet = Array.from({length: PHOTO_ID}, createPhotoCard);
-console.log(photoSet);
 
 export { photoSet };

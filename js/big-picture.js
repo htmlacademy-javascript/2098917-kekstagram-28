@@ -12,19 +12,11 @@ const bodyTag = document.querySelector('body');
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-const onBigPicEscKeydown = (evt) => {
+function onBigPicEscKeydown (evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeBigPic();
   }
-};
-
-function openBigPic () {
-  bigPicture.classList.remove('hidden');
-  bodyTag.classList.add('modal-open');
-  commentsBlock.classList.add('hidden');
-  commentLoader.classList.add('hidden');
-  document.addEventListener('keydown', onBigPicEscKeydown);
 }
 
 function closeBigPic () {
@@ -33,25 +25,22 @@ function closeBigPic () {
   document.removeEventListener('keydown', onBigPicEscKeydown);
 }
 
-function onMiniPicClick (evt) {
-  if(evt.target.closest('.picture')) {
-    openBigPic();
-    const target = evt.target.closest('.picture');
-    const localPicElement = photoSet.find((photoItem) => Number(target.dataset.id) === photoItem.id);
-    fillData(localPicElement);
-    createComments(localPicElement.comments);
-  }
-}
-picturesContainer.addEventListener('click', onMiniPicClick);
+const openBigPic = () => {
+  bigPicture.classList.remove('hidden');
+  bodyTag.classList.add('modal-open');
+  commentsBlock.classList.add('hidden');
+  commentLoader.classList.add('hidden');
+  document.addEventListener('keydown', onBigPicEscKeydown);
+};
 
-function fillData (pictureDescription) {
+const fillData = (pictureDescription) => {
   bigPicture.querySelector('.big-picture__img img').src = pictureDescription.url;
   bigPicture.querySelector('.likes-count').textContent = pictureDescription.likes;
   bigPicture.querySelector('.comments-count').textContent = pictureDescription.comments.length;
   bigPicture.querySelector('.social__caption').textContent = pictureDescription.description;
-}
+};
 
-function createComments (comments) {
+const createComments = (comments) => {
   const singleCommentFragment = document.createDocumentFragment();
   comments.forEach(({avatar, message, name}) => {
     const newComment = commentTemplate.cloneNode(true);
@@ -62,7 +51,19 @@ function createComments (comments) {
   });
   bigPicCommentsSection.innerHTML = '';
   bigPicCommentsSection.appendChild(singleCommentFragment);
-}
+};
+
+const onMiniPicClick = (evt) => {
+  if(evt.target.closest('.picture')) {
+    openBigPic();
+    const target = evt.target.closest('.picture');
+    const localPicElement = photoSet.find((photoItem) => Number(target.dataset.id) === photoItem.id);
+    fillData(localPicElement);
+    createComments(localPicElement.comments);
+  }
+};
+
+picturesContainer.addEventListener('click', onMiniPicClick);
 
 bigPicCloseBtn.addEventListener('click', () => {
   closeBigPic();
