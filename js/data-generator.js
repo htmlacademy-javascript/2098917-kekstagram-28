@@ -3,7 +3,7 @@ import { getRandomArrayElement } from './util.js';
 import { createUniqueId } from './util.js';
 
 const URL_COUNT = 25;
-const COMMENT_ID = 200;
+const COMMENT_ID = 500;
 const PHOTO_ID = 25;
 const COMMENT_COUNT = 10;
 const MIN_LIKES = 15;
@@ -54,24 +54,25 @@ const PHOTO_DESCRIPTIONS = [
   'Выложила новую работу, оцените! #рисунок #акварель',
   'Долгожданный отпуск! #море',
   'Новое приобретение #мода',
-  'Мой пёсель нашёл нового друга на прогулке! #питомцы #собаки',
-  'Испекла тортик маме на День Рождения! #сднемрождения #торт',
-  'Сегодня холодно, в кормушку прилетело много птичек #зима #птички',
-  'Воскресный завтрак #блинчики',
+  'Живу свою лучшую жизнь #кайф #радость',
+  'Отмечаем день рождение! #праздник #мечтысбываются',
+  'Где я окажусь завтра, не знаю, но сегодня всё прекрасно #такдержать',
+  'Воскресный завтрак #еда',
   'Давно не выкладывала своих фото #себяшка',
 ];
 
 const createPhotoCard = () => {
   const getRandomCommentCount = getRandomInteger(1, COMMENT_COUNT);
   return {
-    photoId: photoId(),
-    photoUrl: `photos/${photoUrl()}.jpg`,
-    photoDescription: getRandomArrayElement(PHOTO_DESCRIPTIONS),
-    photoLikes: getRandomInteger(MIN_LIKES, MAX_LIKES),
-    photoComments: Array.from({length: getRandomCommentCount}, createComment),
+    id: photoId(),
+    url: `photos/${photoUrl()}.jpg`,
+    description: getRandomArrayElement(PHOTO_DESCRIPTIONS),
+    likes: getRandomInteger(MIN_LIKES, MAX_LIKES),
+    comments: Array.from({length: getRandomCommentCount}, createComment),
   };
 };
 
 const photoSet = Array.from({length: PHOTO_ID}, createPhotoCard);
+console.log(photoSet);
 
 export { photoSet };
