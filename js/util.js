@@ -1,3 +1,5 @@
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(min, max));
   const upper = Math.floor(Math.max(min, max));
@@ -23,4 +25,4 @@ function createUniqueId (min, max) {
   };
 }
 
-export {createUniqueId, getRandomInteger, getRandomArrayElement};
+export {createUniqueId, getRandomInteger, getRandomArrayElement, isEscapeKey};
