@@ -1,6 +1,7 @@
 import './minis-generator.js';
 import { picturesContainer } from './minis-generator.js';
 import { photoSet } from './data-generator.js';
+import { isEscapeKey } from './util.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const bigPicCloseBtn = bigPicture.querySelector('.big-picture__cancel');
@@ -9,8 +10,6 @@ const commentTemplate = document.querySelector('#social__comment').content.query
 const commentsBlock = bigPicture.querySelector('.social__comment-count');
 const commentLoader = bigPicture.querySelector('.comments-loader');
 const bodyTag = document.querySelector('body');
-
-const isEscapeKey = (evt) => evt.key === 'Escape';
 
 function onBigPicEscKeydown (evt) {
   if (isEscapeKey(evt)) {
