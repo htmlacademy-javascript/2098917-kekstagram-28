@@ -1,7 +1,7 @@
 import './minis-generator.js';
 import { picturesContainer } from './minis-generator.js';
 import { photoSet } from './data-generator.js';
-import { isEscapeKey } from './util.js'
+import { isEscapeKey } from './util.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const bigPicCloseBtn = bigPicture.querySelector('.big-picture__cancel');
