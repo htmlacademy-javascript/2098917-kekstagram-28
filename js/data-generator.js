@@ -5,7 +5,7 @@ import { createUniqueId } from './util.js';
 const URL_COUNT = 25;
 const COMMENT_ID = 500;
 const PHOTO_ID = 25;
-const COMMENT_COUNT = 10;
+const COMMENT_COUNT = 30;
 const MIN_LIKES = 15;
 const MAX_LIKES = 200;
 
