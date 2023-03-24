@@ -61,6 +61,19 @@ const createComments = (comments) => {
   bigPicCommentsSection.appendChild(singleCommentFragment);
 };
 
+// Отображение комментариев
+const loadComments = () => {
+  if (localComments.length <= COMMENTS_PER_LOAD) {
+    createComments(localComments);
+    commentLoader.classList.add('hidden');
+  } else {
+    commentLoader.classList.remove('hidden');
+    batchOfComments = COMMENTS_PER_LOAD;
+    createComments(localComments.slice(0, batchOfComments));
+  }
+  commentLoader.addEventListener('click', onLoadMore);
+};
+
 // Открытие большой фотографии
 const onMiniPicClick = (evt) => {
   if(evt.target.closest('.picture')) {
@@ -75,23 +88,10 @@ const onMiniPicClick = (evt) => {
 
 picturesContainer.addEventListener('click', onMiniPicClick);
 
-// Отображение комментариев
-const loadComments = () => {
-  if (localComments.length <= COMMENTS_PER_LOAD) {
-    createComments(localComments);
-    commentLoader.classList.add('hidden');
-  } else {
-    commentLoader.classList.remove('hidden');
-    batchOfComments = COMMENTS_PER_LOAD;
-    createComments(localComments.slice(0, batchOfComments));
-  }
-  commentLoader.addEventListener('click', onLoadMore);
-};
-
 // Подгрузка комментариев
 function onLoadMore () {
   batchOfComments += COMMENTS_PER_LOAD;
-  let loadedComments = localComments.slice(0, batchOfComments);
+  const loadedComments = localComments.slice(0, batchOfComments);
   if (loadedComments.length === localComments.length) {
     commentLoader.classList.add('hidden');
   }
