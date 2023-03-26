@@ -10,7 +10,11 @@ const commentTemplate = document.querySelector('#social__comment').content.query
 const commentLoader = bigPicture.querySelector('.comments-loader');
 const bodyTag = document.querySelector('body');
 const minCommentsCount = bigPicture.querySelector('.min-count');
+const COMMENTS_PER_LOAD = 5;
+let batchOfComments;
+let localComments;
 
+// Функция выхода по нажатию Esc
 function onBigPicEscKeydown (evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
@@ -18,31 +22,32 @@ function onBigPicEscKeydown (evt) {
   }
 }
 
+// Закрытие большой фотографии
 function closeBigPic () {
   bodyTag.classList.remove('modal-open');
   bigPicture.classList.add('hidden');
   document.removeEventListener('keydown', onBigPicEscKeydown);
+  commentLoader.removeEventListener('click', onLoadMore);
 }
 
+// Открытие большой фотографии
 const openBigPic = () => {
   bigPicture.classList.remove('hidden');
   bodyTag.classList.add('modal-open');
   document.addEventListener('keydown', onBigPicEscKeydown);
 };
 
+// Заполнение большой фотографии данными (подстановка фотки, кол-во лайков, описание, сколько комментов показано из общего кол-ва)
 const fillData = (pictureDescription) => {
   const numberOfComments = pictureDescription.comments.length;
   bigPicture.querySelector('.big-picture__img img').src = pictureDescription.url;
   bigPicture.querySelector('.likes-count').textContent = pictureDescription.likes;
   bigPicture.querySelector('.comments-count').textContent = numberOfComments;
   bigPicture.querySelector('.social__caption').textContent = pictureDescription.description;
-  if (numberOfComments <= 5) {
-    minCommentsCount.textContent = numberOfComments;
-  } else {
-    minCommentsCount.textContent = 5;
-  } //Проверяю, сколько комментов, если меньше 5, то записываю количество комментов в самостоятельно добавленный спан с классом .min-count
+  minCommentsCount.textContent = numberOfComments <= COMMENTS_PER_LOAD ? numberOfComments : COMMENTS_PER_LOAD;
 };
 
+// Отрисовка отдельно взятого коммента и подцепка его в контейнер <ul>
 const createComments = (comments) => {
   const singleCommentFragment = document.createDocumentFragment();
   comments.forEach(({avatar, message, name}) => {
@@ -56,33 +61,43 @@ const createComments = (comments) => {
   bigPicCommentsSection.appendChild(singleCommentFragment);
 };
 
+// Отображение комментариев
+const loadComments = () => {
+  if (localComments.length <= COMMENTS_PER_LOAD) {
+    createComments(localComments);
+    commentLoader.classList.add('hidden');
+  } else {
+    commentLoader.classList.remove('hidden');
+    batchOfComments = COMMENTS_PER_LOAD;
+    createComments(localComments.slice(0, batchOfComments));
+  }
+  commentLoader.addEventListener('click', onLoadMore);
+};
+
+// Открытие большой фотографии
 const onMiniPicClick = (evt) => {
   if(evt.target.closest('.picture')) {
     openBigPic();
     const target = evt.target.closest('.picture');
     const localPicElement = photoSet.find((photoItem) => Number(target.dataset.id) === photoItem.id);
-    fillData(localPicElement); //раньше все кончалось на этом.
-
-    if (localPicElement.comments.length <= 5) {
-      createComments(localPicElement.comments);
-      commentLoader.classList.add('hidden'); //если комментов меньше пяти, то просто отрисовывается, как обычно, и кнопки "Загрузить ещё" нет.
-    } else {
-      commentLoader.classList.remove('hidden');
-      let commentsPortion = 5;
-      let loadedComments = localPicElement.comments.slice(0, commentsPortion);
-      createComments(loadedComments);
-
-      commentLoader.addEventListener('click', () => {
-        commentsPortion += 5;
-        loadedComments = localPicElement.comments.slice(0, commentsPortion);
-        createComments(loadedComments);
-        minCommentsCount.textContent = loadedComments.length;
-      });
-    } //я чувствую, что тут полная каша, и принцип DRY видит это и рыдает, но пока мне не приходит в голову, как это исправить. Время поджимает, заданное в дз этот код делает, так что сдаю, что есть... >_<
+    fillData(localPicElement);
+    localComments = localPicElement.comments;
+    loadComments(localComments);
   }
 };
 
 picturesContainer.addEventListener('click', onMiniPicClick);
+
+// Подгрузка комментариев
+function onLoadMore () {
+  batchOfComments += COMMENTS_PER_LOAD;
+  const loadedComments = localComments.slice(0, batchOfComments);
+  if (loadedComments.length === localComments.length) {
+    commentLoader.classList.add('hidden');
+  }
+  createComments(loadedComments);
+  minCommentsCount.textContent = loadedComments.length;
+}
 
 bigPicCloseBtn.addEventListener('click', () => {
   closeBigPic();
