@@ -109,4 +109,4 @@ bigPicCloseBtn.addEventListener('keydown', (evt) => {
   }
 });
 
-export { onMiniPicClick, picturesContainer };
+export { onMiniPicClick, picturesContainer, bodyTag };
