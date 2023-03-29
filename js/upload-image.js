@@ -4,12 +4,12 @@ import { isEscapeKey } from './util.js';
 const imgLoader = document.querySelector('.img-upload__overlay');
 const cancelUpload = document.querySelector('.img-upload__cancel');
 const imgInput = document.querySelector('#upload-file');
-
 const imgUploadForm = document.querySelector('.img-upload__form');
-
 const hashtagInput = imgUploadForm.querySelector('#hashtags');
 const commentInput = imgUploadForm.querySelector('.text__description');
 const submitButton = document.querySelector('.img-upload__submit');
+const HASHTAGS_MAX_AMOUNT = 5;
+const VALID_HASHTAGS = /^#[a-zа-яё0-9]{1,19}$/i;
 
 //Открытие и закрытие формы загрузки
 function onImgLoaderEscKeydown (evt) {
@@ -62,10 +62,9 @@ commentInput.addEventListener('blur', () => {
   document.addEventListener('keydown', onImgLoaderEscKeydown);
 });
 
-// Валидация хэштэгов
-const HASHTAGS_MAX_AMOUNT = 5;
-const validHashtag = /^#[a-zа-яё0-9]{1,19}$/i;
+imgInput.addEventListener('change', onUploadImg);
 
+// Валидация хэштэгов
 const pristine = new Pristine(imgUploadForm, {
   classTo: 'img-upload__text',
   errorClass: 'img-upload__text--invalid',
@@ -75,7 +74,7 @@ const pristine = new Pristine(imgUploadForm, {
 });
 
 function validateSymbols (tag) {
-  return validHashtag.test(tag);
+  return VALID_HASHTAGS.test(tag);
 }
 
 function validateAmount (tags) {
@@ -83,8 +82,8 @@ function validateAmount (tags) {
 }
 
 function checkRepeats (tags) {
-  const LowerCase = tags.map((tag) => tag.toLowerCase());
-  return LowerCase.length === new Set(LowerCase).size;
+  const lowerCase = tags.map((tag) => tag.toLowerCase());
+  return lowerCase.length === new Set(lowerCase).size;
 }
 
 function validateTags (value) {
@@ -115,5 +114,3 @@ const onSubmit = (evt) => {
 };
 
 imgUploadForm.addEventListener('submit', onSubmit);
-
-export {imgInput, onUploadImg, imgUploadForm, onSubmit};
