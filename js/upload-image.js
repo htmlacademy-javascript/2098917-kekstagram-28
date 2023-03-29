@@ -1,6 +1,8 @@
 import { bodyTag } from './big-picture.js';
 import { isEscapeKey } from './util.js';
 
+const HASHTAGS_MAX_AMOUNT = 5;
+const VALID_HASHTAGS = /^#[a-zа-яё0-9]{1,19}$/i;
 const imgLoader = document.querySelector('.img-upload__overlay');
 const cancelUpload = document.querySelector('.img-upload__cancel');
 const imgInput = document.querySelector('#upload-file');
@@ -8,8 +10,6 @@ const imgUploadForm = document.querySelector('.img-upload__form');
 const hashtagInput = imgUploadForm.querySelector('#hashtags');
 const commentInput = imgUploadForm.querySelector('.text__description');
 const submitButton = document.querySelector('.img-upload__submit');
-const HASHTAGS_MAX_AMOUNT = 5;
-const VALID_HASHTAGS = /^#[a-zа-яё0-9]{1,19}$/i;
 
 //Открытие и закрытие формы загрузки
 function onImgLoaderEscKeydown (evt) {
@@ -102,8 +102,6 @@ pristine.addValidator(
   validateTags,
   'Хэштег должен начинаться с #, допустимы символы от A до Z, от А до Я <br>в любом регистре, не более 20 символов, не больше 5 уникальных тэгов'
 );
-
-//#test #test #tEst1 #teSt2 #test3
 
 // Submit
 const onSubmit = (evt) => {
