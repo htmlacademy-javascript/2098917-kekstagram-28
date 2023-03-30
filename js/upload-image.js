@@ -1,5 +1,6 @@
 import { bodyTag } from './big-picture.js';
 import { isEscapeKey } from './util.js';
+import {setScale, DEAFULT_SCALE} from './img-scale.js';
 
 const HASHTAGS_MAX_AMOUNT = 5;
 const VALID_HASHTAGS = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -29,6 +30,7 @@ function closeImgLoader () {
   imgInput.textContent = '';
   hashtagInput.textContent = '';
   commentInput.textContent = '';
+  setScale(DEAFULT_SCALE);
   bodyTag.classList.remove('modal-open');
   imgLoader.classList.add('hidden');
   document.removeEventListener('keydown', onImgLoaderEscKeydown);

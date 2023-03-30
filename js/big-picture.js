@@ -3,6 +3,7 @@ import { picturesContainer } from './minis-generator.js';
 import { photoSet } from './data-generator.js';
 import { isEscapeKey } from './util.js';
 
+const COMMENTS_PER_LOAD = 5;
 const bigPicture = document.querySelector('.big-picture');
 const bigPicCloseBtn = bigPicture.querySelector('.big-picture__cancel');
 const bigPicCommentsSection = bigPicture.querySelector('.social__comments');
@@ -10,7 +11,6 @@ const commentTemplate = document.querySelector('#social__comment').content.query
 const commentLoader = bigPicture.querySelector('.comments-loader');
 const bodyTag = document.querySelector('body');
 const minCommentsCount = bigPicture.querySelector('.min-count');
-const COMMENTS_PER_LOAD = 5;
 let batchOfComments;
 let localComments;
 
