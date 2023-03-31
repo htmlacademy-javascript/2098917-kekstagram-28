@@ -114,3 +114,5 @@ const onSubmit = (evt) => {
 };
 
 imgUploadForm.addEventListener('submit', onSubmit);
+
+export {imgUploadForm};

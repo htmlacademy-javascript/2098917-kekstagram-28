@@ -17,7 +17,7 @@ const setScale = function (value) {
 const onZoomOut = function () {
   currentInputValue = parseInt(scaleInput.value, 10);
   if (currentInputValue !== MIN_SCALE){
-    let lesserScale = currentInputValue -= SCALE_STEP;
+    const lesserScale = currentInputValue -= SCALE_STEP;
     setScale(lesserScale);
   }
 };
@@ -25,7 +25,7 @@ const onZoomOut = function () {
 const onZoomIn = function () {
   currentInputValue = parseInt(scaleInput.value, 10);
   if (currentInputValue !== MAX_SCALE){
-    let biggerScale = currentInputValue += SCALE_STEP;
+    const biggerScale = currentInputValue += SCALE_STEP;
     setScale(biggerScale);
   }
 };
@@ -33,4 +33,4 @@ const onZoomIn = function () {
 scaleMin.addEventListener('click', onZoomOut);
 scaleMax.addEventListener('click', onZoomIn);
 
-export {setScale, DEAFULT_SCALE};
+export {setScale, DEAFULT_SCALE, imgPreview};
