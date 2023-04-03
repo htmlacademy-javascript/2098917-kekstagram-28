@@ -13,12 +13,12 @@ const commentInput = imgUploadForm.querySelector('.text__description');
 const submitButton = document.querySelector('.img-upload__submit');
 
 //Открытие и закрытие формы загрузки
-function onImgLoaderEscKeydown (evt) {
+const onImgLoaderEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeImgLoader();
   }
-}
+};
 
 const openImgLoader = () => {
   imgLoader.classList.remove('hidden');
@@ -75,18 +75,14 @@ const pristine = new Pristine(imgUploadForm, {
   errorTextClass: 'img-upload__error'
 });
 
-function validateSymbols (tag) {
-  return VALID_HASHTAGS.test(tag);
-}
+const validateSymbols = (tag) => VALID_HASHTAGS.test(tag);
 
-function validateAmount (tags) {
-  return tags.length <= HASHTAGS_MAX_AMOUNT;
-}
+const validateAmount = (tags) => tags.length <= HASHTAGS_MAX_AMOUNT;
 
-function checkRepeats (tags) {
+const checkRepeats = (tags) => {
   const lowerCase = tags.map((tag) => tag.toLowerCase());
   return lowerCase.length === new Set(lowerCase).size;
-}
+};
 
 function validateTags (value) {
   const tags = value.trim().split(' ').filter((tag) => tag.trim().length);

@@ -2,6 +2,7 @@ const SCALE_STEP = 25;
 const MIN_SCALE = 25;
 const MAX_SCALE = 100;
 const DEAFULT_SCALE = 100;
+const SCALE_DIVIDER = 100;
 
 const scaleInput = document.querySelector('.scale__control--value');
 const scaleMin = document.querySelector('.scale__control--smaller');
@@ -11,7 +12,7 @@ let currentInputValue;
 
 const setScale = function (value) {
   scaleInput.value = `${value}%`;
-  imgPreview.style.transform = `scale(${value / 100})`;
+  imgPreview.style.transform = `scale(${value / SCALE_DIVIDER})`;
 };
 
 const onZoomOut = function () {
