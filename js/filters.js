@@ -146,43 +146,43 @@ const sliderContainer = document.querySelector('.effect-level');
 const sliderInput = document.querySelector('.effect-level__value');
 
 const defaultFilter = FILTERS[0];
-let selectedFilter;
+let selectedFilter = defaultFilter;
 
-const hideSlider = function () {
+noUiSlider.create(slider, defaultFilter); //Создали слайдер */
+
+const hideSlider = () => {
   sliderContainer.classList.add('hidden');
+  imgPreview.className = 'effects__preview--none';
+  imgPreview.style.filter = '';
 };
 
-const showSlider = function () {
+const showSlider = () => {
   sliderContainer.classList.remove('hidden');
 };
 
-const updateSlider = function (value) {
-  slider.noUiSlider.on('update', () => {
-    sliderInput.value = slider.noUiSlider.get();
-    imgPreview.style.filter = `${value.filter}(${sliderInput.value}${value.unit})`;
-  });
-};
+hideSlider(); //Спрятали слайдер
 
+//На клик по превью эффекта:
 const onChange = (evt) => {
-  if (evt.target.classList.contains('effects__radio')) {
-    const effectsId = evt.target.value; //Записали в переменную, по какому фильтру кликнул пользователь
-    imgPreview.className = `effects__preview--${effectsId}`; //На изображении поменяли класс на тот, который выбрал пользователь
-    selectedFilter = FILTERS.find((element) => element.name === effectsId);// В массиве с фильтрами нашли объект с настройками слайдера для выбранного фильтра
+  if (evt.target.classList.contains('effects__radio')) { //нашли элемент превью эффекта
+    const effectsId = evt.target.value; //Записали в переменную название фильтра, по которому кликнул пользователь
+    imgPreview.className = `effects__preview--${effectsId}`; //Добавили большому изображению класс с эффектом, который выбрал пользователь
+    selectedFilter = FILTERS.find((element) => element.name === effectsId);// В массиве с фильтрами FILTERS нашли объект с настройками слайдера для выбранного фильтра
+    //Если выбранный эффект отличается от эффекта по-умолчанию, подставить найденные настройки в слайдер.
     if (selectedFilter.name !== 'none') {
       showSlider();
       slider.noUiSlider.updateOptions(selectedFilter);
-      updateSlider(selectedFilter);
+
     } else {
       hideSlider();
     }
+    return selectedFilter;
   }
 };
 
-const createSlider = (value) => {
-  noUiSlider.create(slider, value);
-};
-
-createSlider(defaultFilter);
-hideSlider();
+slider.noUiSlider.on('update', () => {
+  sliderInput.value = slider.noUiSlider.get();
+  imgPreview.style.filter = `${selectedFilter.filter}(${sliderInput.value}${selectedFilter.unit})`;
+});
 
 imgUploadForm.addEventListener('change', onChange);
