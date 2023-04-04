@@ -1,5 +1,6 @@
 import { bodyTag } from './big-picture.js';
 import { isEscapeKey } from './util.js';
+import {setScale, DEAFULT_SCALE} from './img-scale.js';
 
 const HASHTAGS_MAX_AMOUNT = 5;
 const VALID_HASHTAGS = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -12,12 +13,12 @@ const commentInput = imgUploadForm.querySelector('.text__description');
 const submitButton = document.querySelector('.img-upload__submit');
 
 //Открытие и закрытие формы загрузки
-function onImgLoaderEscKeydown (evt) {
+const onImgLoaderEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeImgLoader();
   }
-}
+};
 
 const openImgLoader = () => {
   imgLoader.classList.remove('hidden');
@@ -29,6 +30,7 @@ function closeImgLoader () {
   imgInput.textContent = '';
   hashtagInput.textContent = '';
   commentInput.textContent = '';
+  setScale(DEAFULT_SCALE);
   bodyTag.classList.remove('modal-open');
   imgLoader.classList.add('hidden');
   document.removeEventListener('keydown', onImgLoaderEscKeydown);
@@ -73,18 +75,14 @@ const pristine = new Pristine(imgUploadForm, {
   errorTextClass: 'img-upload__error'
 });
 
-function validateSymbols (tag) {
-  return VALID_HASHTAGS.test(tag);
-}
+const validateSymbols = (tag) => VALID_HASHTAGS.test(tag);
 
-function validateAmount (tags) {
-  return tags.length <= HASHTAGS_MAX_AMOUNT;
-}
+const validateAmount = (tags) => tags.length <= HASHTAGS_MAX_AMOUNT;
 
-function checkRepeats (tags) {
+const checkRepeats = (tags) => {
   const lowerCase = tags.map((tag) => tag.toLowerCase());
   return lowerCase.length === new Set(lowerCase).size;
-}
+};
 
 function validateTags (value) {
   const tags = value.trim().split(' ').filter((tag) => tag.trim().length);
@@ -112,3 +110,5 @@ const onSubmit = (evt) => {
 };
 
 imgUploadForm.addEventListener('submit', onSubmit);
+
+export {imgUploadForm};
