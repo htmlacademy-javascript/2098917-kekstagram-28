@@ -4,6 +4,7 @@ import { setScale, DEAFULT_SCALE } from './img-scale.js';
 import { showAlert } from './util.js';
 import { sendData } from './api.js';
 import { imgPreview } from './img-scale.js';
+import { updateSliderSettings, defaultFilter, hideSlider } from './filters.js';
 
 const HASHTAGS_MAX_AMOUNT = 5;
 const VALID_HASHTAGS = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -14,6 +15,7 @@ const imgUploadForm = document.querySelector('.img-upload__form');
 const hashtagInput = imgUploadForm.querySelector('#hashtags');
 const commentInput = imgUploadForm.querySelector('.text__description');
 const submitButton = document.querySelector('.img-upload__submit');
+const defaultEffect = document.querySelector('#effect-none');
 
 const SubmitButtonText = {
   IDLE: 'Сохранить',
@@ -45,6 +47,9 @@ function closeImgLoader () {
   imgPreview.className = 'effects__preview--none';
   imgPreview.style.filter = 'none';
   document.removeEventListener('keydown', onImgLoaderEscKeydown);
+  updateSliderSettings(defaultFilter);
+  defaultEffect.checked = true;
+  hideSlider();
 }
 
 const onUploadImg = () => {
@@ -139,4 +144,4 @@ const setPhotoSubmit = (onSuccess) => {
   });
 };
 
-export { setPhotoSubmit, openImgLoader, closeImgLoader, imgUploadForm };
+export { setPhotoSubmit, openImgLoader, closeImgLoader };
