@@ -4,10 +4,10 @@ import { createUniqueId } from './util.js';
 
 const URL_COUNT = 25;
 const COMMENT_ID = 500;
-const PHOTO_ID = 25;
 const COMMENT_COUNT = 30;
 const MIN_LIKES = 15;
 const MAX_LIKES = 200;
+const PHOTO_ID = 25;
 
 const COMMENT_AVATARS = [
   'img/avatar-1.svg',
@@ -72,6 +72,4 @@ const createPhotoCard = () => {
   };
 };
 
-const photoSet = Array.from({length: PHOTO_ID}, createPhotoCard);
-
-export { photoSet };
+export { createPhotoCard, PHOTO_ID };

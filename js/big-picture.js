@@ -1,6 +1,5 @@
 import './minis-generator.js';
 import { picturesContainer } from './minis-generator.js';
-import { photoSet } from './data-generator.js';
 import { isEscapeKey } from './util.js';
 
 const COMMENTS_PER_LOAD = 5;
@@ -75,18 +74,19 @@ const loadComments = () => {
 };
 
 // Открытие большой фотографии
-const onMiniPicClick = (evt) => {
-  if(evt.target.closest('.picture')) {
-    openBigPic();
-    const target = evt.target.closest('.picture');
-    const localPicElement = photoSet.find((photoItem) => Number(target.dataset.id) === photoItem.id);
-    fillData(localPicElement);
-    localComments = localPicElement.comments;
-    loadComments(localComments);
-  }
+const openBigPicture = (photos) => {
+  const onMiniPicClick = (evt) => {
+    if(evt.target.closest('.picture')) {
+      openBigPic();
+      const target = evt.target.closest('.picture');
+      const localPicElement = photos.find((photoItem) => Number(target.dataset.id) === photoItem.id);
+      fillData(localPicElement);
+      localComments = localPicElement.comments;
+      loadComments(localComments);
+    }
+  };
+  picturesContainer.addEventListener('click', onMiniPicClick);
 };
-
-picturesContainer.addEventListener('click', onMiniPicClick);
 
 // Подгрузка комментариев
 function onLoadMore () {
@@ -109,4 +109,4 @@ bigPicCloseBtn.addEventListener('keydown', (evt) => {
   }
 });
 
-export { onMiniPicClick, picturesContainer, bodyTag };
+export { openBigPicture, picturesContainer, bodyTag };

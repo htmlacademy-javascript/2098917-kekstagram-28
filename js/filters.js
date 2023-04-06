@@ -168,7 +168,6 @@ const onChange = (evt) => {
     const effectsId = evt.target.value; //Записали в переменную название фильтра, по которому кликнул пользователь
     imgPreview.className = `effects__preview--${effectsId}`; //Добавили большому изображению класс с эффектом, который выбрал пользователь
     selectedFilter = FILTERS.find((element) => element.name === effectsId);// В массиве с фильтрами FILTERS нашли объект с настройками слайдера для выбранного фильтра
-    //Если выбранный эффект отличается от эффекта по-умолчанию, подставить найденные настройки в слайдер.
     if (selectedFilter.name !== 'none') {
       showSlider();
       slider.noUiSlider.updateOptions(selectedFilter);
