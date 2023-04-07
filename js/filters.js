@@ -1,5 +1,4 @@
 import {imgPreview} from './img-scale.js';
-//import {imgUploadForm} from './upload-image.js';
 
 const FILTERS = [
   {

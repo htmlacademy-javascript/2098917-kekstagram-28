@@ -8,6 +8,12 @@ import { updateSliderSettings, defaultFilter, hideSlider } from './filters.js';
 
 const HASHTAGS_MAX_AMOUNT = 5;
 const VALID_HASHTAGS = /^#[a-zа-яё0-9]{1,19}$/i;
+
+const SubmitButtonText = {
+  IDLE: 'Сохранить',
+  SENDING: 'Сохраняю...'
+};
+
 const imgLoader = document.querySelector('.img-upload__overlay');
 const cancelUpload = document.querySelector('.img-upload__cancel');
 const imgInput = document.querySelector('#upload-file');
@@ -16,11 +22,6 @@ const hashtagInput = imgUploadForm.querySelector('#hashtags');
 const commentInput = imgUploadForm.querySelector('.text__description');
 const submitButton = document.querySelector('.img-upload__submit');
 const defaultEffect = document.querySelector('#effect-none');
-
-const SubmitButtonText = {
-  IDLE: 'Сохранить',
-  SENDING: 'Сохраняю...'
-};
 
 //Открытие и закрытие формы загрузки
 const onImgLoaderEscKeydown = (evt) => {
