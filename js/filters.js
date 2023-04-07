@@ -1,5 +1,4 @@
 import {imgPreview} from './img-scale.js';
-import {imgUploadForm} from './upload-image.js';
 
 const FILTERS = [
   {
@@ -144,6 +143,7 @@ const FILTERS = [
 const slider = document.querySelector('.effect-level__slider');
 const sliderContainer = document.querySelector('.effect-level');
 const sliderInput = document.querySelector('.effect-level__value');
+const effectsContainer = document.querySelector('.img-upload__effects');
 
 const defaultFilter = FILTERS[0];
 let selectedFilter = defaultFilter;
@@ -162,16 +162,24 @@ const showSlider = () => {
 
 hideSlider(); //Спрятали слайдер
 
+const updateSliderSettings = (settings) => {
+  slider.noUiSlider.updateOptions(settings);
+};
+
+const onSliderValueUpdate = () => {
+  sliderInput.value = slider.noUiSlider.get();
+  imgPreview.style.filter = `${selectedFilter.filter}(${sliderInput.value}${selectedFilter.unit})`;
+};
+
 //На клик по превью эффекта:
 const onChange = (evt) => {
   if (evt.target.classList.contains('effects__radio')) { //нашли элемент превью эффекта
     const effectsId = evt.target.value; //Записали в переменную название фильтра, по которому кликнул пользователь
     imgPreview.className = `effects__preview--${effectsId}`; //Добавили большому изображению класс с эффектом, который выбрал пользователь
     selectedFilter = FILTERS.find((element) => element.name === effectsId);// В массиве с фильтрами FILTERS нашли объект с настройками слайдера для выбранного фильтра
-    //Если выбранный эффект отличается от эффекта по-умолчанию, подставить найденные настройки в слайдер.
     if (selectedFilter.name !== 'none') {
       showSlider();
-      slider.noUiSlider.updateOptions(selectedFilter);
+      updateSliderSettings(selectedFilter);
 
     } else {
       hideSlider();
@@ -180,9 +188,8 @@ const onChange = (evt) => {
   }
 };
 
-slider.noUiSlider.on('update', () => {
-  sliderInput.value = slider.noUiSlider.get();
-  imgPreview.style.filter = `${selectedFilter.filter}(${sliderInput.value}${selectedFilter.unit})`;
-});
+slider.noUiSlider.on('update', onSliderValueUpdate);
 
-imgUploadForm.addEventListener('change', onChange);
+effectsContainer.addEventListener('change', onChange);
+
+export { updateSliderSettings, defaultFilter, hideSlider };
