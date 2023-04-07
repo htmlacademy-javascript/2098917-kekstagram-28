@@ -1,9 +1,5 @@
-import { createPhotoCard, PHOTO_ID } from './data-generator.js';
-
 const picturesContainer = document.querySelector ('.pictures');
 const template = document.querySelector('#picture').content.querySelector('.picture');
-
-const photoSet = Array.from({length: PHOTO_ID}, createPhotoCard);
 
 const renderMiniPhotos = (photos) => {
   const similarPhotoFragment = document.createDocumentFragment();
@@ -21,4 +17,4 @@ const renderMiniPhotos = (photos) => {
   picturesContainer.appendChild(similarPhotoFragment);
 };
 
-export { picturesContainer, renderMiniPhotos, photoSet };
+export { picturesContainer, renderMiniPhotos };
