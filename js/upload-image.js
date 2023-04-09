@@ -8,7 +8,7 @@ import { updateSliderSettings, defaultFilter, hideSlider } from './filters.js';
 
 const HASHTAGS_MAX_AMOUNT = 5;
 const VALID_HASHTAGS = /^#[a-zа-яё0-9]{1,19}$/i;
-
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const SubmitButtonText = {
   IDLE: 'Сохранить',
   SENDING: 'Сохраняю...'
@@ -51,6 +51,7 @@ function closeImgLoader () {
   updateSliderSettings(defaultFilter);
   defaultEffect.checked = true;
   hideSlider();
+  imgPreview.src = '';
 }
 
 const onUploadImg = () => {
@@ -127,6 +128,19 @@ pristine.addValidator(
   validateTags,
   'Хэштег должен начинаться с #, допустимы символы от A до Z, от А до Я <br>в любом регистре, не более 20 символов, не больше 5 уникальных тэгов'
 );
+
+const getImage = () => {
+  const file = imgInput.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    imgPreview.src = URL.createObjectURL(file);
+  }
+};
+
+imgInput.addEventListener('change', getImage);
 
 // Submit
 const setPhotoSubmit = (onSuccess) => {
