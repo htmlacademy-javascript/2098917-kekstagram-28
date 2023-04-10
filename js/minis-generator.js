@@ -5,6 +5,10 @@ const RANDOM_PHOTOS = 10;
 const picturesContainer = document.querySelector ('.pictures');
 const template = document.querySelector('#picture').content.querySelector('.picture');
 const imgFilters = document.querySelector('.img-filters');
+const imgFiltersContainer = document.querySelector('.img-filters__form');
+const defaultSorting = document.querySelector('#filter-default');
+const randomSorting = document.querySelector('#filter-random');
+const sortingByComments = document.querySelector('#filter-discussed');
 
 const renderMiniPhotos = (photos) => {
   const similarPhotoFragment = document.createDocumentFragment();
@@ -33,46 +37,49 @@ const showFilters = () => {
   imgFilters.classList.remove('img-filters--inactive');
 };
 
-const sortPhotos = (photos) => {
-  const defaultSorting = document.querySelector('#filter-default');
-  const randomSorting = document.querySelector('#filter-random');
-  const sortingByComments = document.querySelector('#filter-discussed');
 
-  defaultSorting.addEventListener('click', debounce(() => {
-    defaultSorting.classList.add('img-filters__button--active');
-    randomSorting.classList.remove('img-filters__button--active');
-    sortingByComments.classList.remove('img-filters__button--active');
-    const picArray = document.querySelectorAll('.picture');
-    picArray.forEach((picture) => {
-      picture.remove();
-    });
-    renderMiniPhotos(photos);
-  }, RERENDER_DELAY));
-
-  randomSorting.addEventListener('click', debounce(() => {
-    defaultSorting.classList.remove('img-filters__button--active');
-    randomSorting.classList.add('img-filters__button--active');
-    sortingByComments.classList.remove('img-filters__button--active');
-    const sortedPhotos = photos.slice().sort(sortRandomly).slice(0, RANDOM_PHOTOS);
-    const picArray = document.querySelectorAll('.picture');
-    picArray.forEach((picture) => {
-      picture.remove();
-    });
-    renderMiniPhotos(sortedPhotos);
-  }, RERENDER_DELAY));
-
-  sortingByComments.addEventListener('click', debounce(() => {
-    sortingByComments.classList.add('img-filters__button--active');
-    defaultSorting.classList.remove('img-filters__button--active');
-    randomSorting.classList.remove('img-filters__button--active');
-    const sortedPhotos = photos.slice().sort(sortByComments);
-    const picArray = document.querySelectorAll('.picture');
-    picArray.forEach((picture) => {
-      picture.remove();
-    });
-    renderMiniPhotos(sortedPhotos);
-  }, RERENDER_DELAY));
+const clearPictures = () => {
+  const picArray = document.querySelectorAll('.picture');
+  picArray.forEach((picture) => {
+    picture.remove();
+  });
 };
 
+defaultSorting.addEventListener('click', () => {
+  defaultSorting.classList.add('img-filters__button--active');
+  randomSorting.classList.remove('img-filters__button--active');
+  sortingByComments.classList.remove('img-filters__button--active');
+});
+
+randomSorting.addEventListener('click', () => {
+  defaultSorting.classList.remove('img-filters__button--active');
+  randomSorting.classList.add('img-filters__button--active');
+  sortingByComments.classList.remove('img-filters__button--active');
+});
+
+sortingByComments.addEventListener('click', () => {
+  sortingByComments.classList.add('img-filters__button--active');
+  defaultSorting.classList.remove('img-filters__button--active');
+  randomSorting.classList.remove('img-filters__button--active');
+});
+
+
+const sortPhotos = (photos) => {
+  const onFilterClick = (evt) => {
+    if (evt.target.id === 'filter-default') {
+      clearPictures();
+      renderMiniPhotos(photos);
+    } else if (evt.target.id === 'filter-random') {
+      const sortedPhotos = photos.slice().sort(sortRandomly).slice(0, RANDOM_PHOTOS);
+      clearPictures();
+      renderMiniPhotos(sortedPhotos);
+    } else if (evt.target.id === 'filter-discussed') {
+      const sortedPhotos = photos.slice().sort(sortByComments);
+      clearPictures();
+      renderMiniPhotos(sortedPhotos);
+    }
+  };
+  imgFiltersContainer.addEventListener('click', debounce(onFilterClick, RERENDER_DELAY));
+};
 
 export { picturesContainer, renderMiniPhotos, showFilters, sortPhotos };
