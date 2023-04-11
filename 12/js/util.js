@@ -1,4 +1,3 @@
-const ALERT_SHOW_TIME = 5000;
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const getRandomInteger = (min, max) => {
