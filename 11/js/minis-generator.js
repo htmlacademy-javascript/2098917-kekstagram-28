@@ -66,16 +66,17 @@ sortingByComments.addEventListener('click', () => {
 
 const sortPhotos = (photos) => {
   const onFilterClick = (evt) => {
+    if (!evt.target.classList.contains('img-filters__button')){
+      return;
+    }
+    clearPictures();
     if (evt.target.id === 'filter-default') {
-      clearPictures();
       renderMiniPhotos(photos);
     } else if (evt.target.id === 'filter-random') {
       const sortedPhotos = photos.slice().sort(sortRandomly).slice(0, RANDOM_PHOTOS);
-      clearPictures();
       renderMiniPhotos(sortedPhotos);
     } else if (evt.target.id === 'filter-discussed') {
       const sortedPhotos = photos.slice().sort(sortByComments);
-      clearPictures();
       renderMiniPhotos(sortedPhotos);
     }
   };
