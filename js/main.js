@@ -1,4 +1,4 @@
-import { closeImgLoader, setPhotoSubmit, showUploadSuccess } from './upload-image.js';
+import { closeImgLoader, setPhotoSubmit } from './upload-image.js';
 import { renderMiniPhotos, showFilters, sortPhotos } from './minis-generator.js';
 import { openBigPicture } from './big-picture.js';
 import { getData } from './api.js';
