@@ -10,8 +10,8 @@ const HASHTAGS_MAX_AMOUNT = 5;
 const VALID_HASHTAGS = /^#[a-zа-яё0-9]{1,19}$/i;
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const SubmitButtonText = {
-  IDLE: 'Сохранить',
-  SENDING: 'Сохраняю...'
+  IDLE: 'Отправить',
+  SENDING: 'Отправляю...'
 };
 
 const imgLoader = document.querySelector('.img-upload__overlay');
@@ -142,6 +142,35 @@ const getImage = () => {
 
 imgInput.addEventListener('change', getImage);
 
+const successTemplate = document.querySelector('#success').content.querySelector('.success');
+const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+const errorCloseBtn = document.querySelector('.error__button');
+
+const removeFragment = () => {
+  const findFragment = document.querySelector('.success');
+  findFragment.remove();
+};
+
+const onCloseSuccess = () => {
+  const successCloseBtn = document.querySelector('.success__button');
+  successCloseBtn.addEventListener('click', removeFragment);
+};
+
+/* const onSuccessEscKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    onCloseSuccess();
+  }
+}; */
+
+const showUploadSuccess = () => {
+  const successWindow = successTemplate.cloneNode(true);
+  bodyTag.appendChild(successWindow);
+  onCloseSuccess();
+};
+
+
+
 // Submit
 const setPhotoSubmit = (onSuccess) => {
   imgUploadForm.addEventListener('submit', (evt) => {
@@ -151,6 +180,7 @@ const setPhotoSubmit = (onSuccess) => {
       blockSubmitButton();
       sendData(new FormData(evt.target))
         .then(onSuccess)
+        .then(showUploadSuccess)
         .catch((err) => {
           showAlert(err.message);
         })
@@ -159,4 +189,4 @@ const setPhotoSubmit = (onSuccess) => {
   });
 };
 
-export { setPhotoSubmit, openImgLoader, closeImgLoader };
+export { setPhotoSubmit, openImgLoader, closeImgLoader, showUploadSuccess };
