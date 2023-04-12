@@ -1,7 +1,6 @@
 import { bodyTag } from './big-picture.js';
 import { isEscapeKey } from './util.js';
 import { setScale, DEAFULT_SCALE } from './img-scale.js';
-import { showAlert } from './util.js';
 import { sendData } from './api.js';
 import { imgPreview } from './img-scale.js';
 import { updateSliderSettings, defaultFilter, hideSlider } from './filters.js';
@@ -10,8 +9,8 @@ const HASHTAGS_MAX_AMOUNT = 5;
 const VALID_HASHTAGS = /^#[a-zа-яё0-9]{1,19}$/i;
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const SubmitButtonText = {
-  IDLE: 'Сохранить',
-  SENDING: 'Сохраняю...'
+  IDLE: 'Отправить',
+  SENDING: 'Отправляю...'
 };
 
 const imgLoader = document.querySelector('.img-upload__overlay');
@@ -22,6 +21,8 @@ const hashtagInput = imgUploadForm.querySelector('#hashtags');
 const commentInput = imgUploadForm.querySelector('.text__description');
 const submitButton = document.querySelector('.img-upload__submit');
 const defaultEffect = document.querySelector('#effect-none');
+const successTemplate = document.querySelector('#success').content.querySelector('.success');
+const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 
 //Открытие и закрытие формы загрузки
 const onImgLoaderEscKeydown = (evt) => {
@@ -129,6 +130,7 @@ pristine.addValidator(
   'Хэштег должен начинаться с #, допустимы символы от A до Z, от А до Я <br>в любом регистре, не более 20 символов, не больше 5 уникальных тэгов'
 );
 
+//Подстановка загруженного изображения вместо превью
 const getImage = () => {
   const file = imgInput.files[0];
   const fileName = file.name.toLowerCase();
@@ -142,7 +144,72 @@ const getImage = () => {
 
 imgInput.addEventListener('change', getImage);
 
-// Submit
+// Открытие/закрытие окна об успешной загрузке фото
+const onSuccessEscKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    removeSuccessFragment();
+  }
+};
+
+function onClickAwaySuccess (evt) {
+  const windowSuccess = document.querySelector('.success');
+  if(evt.target === windowSuccess) {
+    removeSuccessFragment();
+  }
+}
+
+function removeSuccessFragment () {
+  const findFragment = document.querySelector('.success');
+  document.querySelector('.success__button').removeEventListener('click', removeSuccessFragment);
+  document.removeEventListener('keydown', onSuccessEscKeydown);
+  document.removeEventListener('click', onClickAwaySuccess);
+  findFragment.remove();
+}
+
+const showUploadSuccess = () => {
+  const successWindow = successTemplate.cloneNode(true);
+  bodyTag.appendChild(successWindow);
+  document.querySelector('.success__button').addEventListener('click', removeSuccessFragment);
+  document.addEventListener('keydown', onSuccessEscKeydown);
+  document.addEventListener('click', onClickAwaySuccess);
+};
+
+// Открытие/закрытие окна об ошибке загрузки фото
+const onErrorEscKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    removeErrorFragment();
+  }
+};
+
+function onClickAwayError (evt) {
+  const windowError = document.querySelector('.error');
+  if(evt.target === windowError) {
+    removeErrorFragment();
+  }
+}
+
+function removeErrorFragment () {
+  const findFragment = document.querySelector('.error');
+  document.querySelector('.error__button').removeEventListener('click', removeErrorFragment);
+  document.removeEventListener('keydown', onErrorEscKeydown);
+  document.removeEventListener('click', onClickAwayError);
+  document.addEventListener('keydown', onImgLoaderEscKeydown);
+  findFragment.remove();
+}
+
+const showUploadError = (message) => {
+  const errorWindow = errorTemplate.cloneNode(true);
+  errorWindow.querySelector('.error__text').textContent = message;
+  bodyTag.appendChild(errorWindow);
+  document.querySelector('.error__button').addEventListener('click', removeErrorFragment);
+  document.addEventListener('keydown', onErrorEscKeydown);
+  document.addEventListener('click', onClickAwayError);
+  document.removeEventListener('keydown', onImgLoaderEscKeydown);
+};
+
+// Отправка фото
 const setPhotoSubmit = (onSuccess) => {
   imgUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
@@ -150,13 +217,16 @@ const setPhotoSubmit = (onSuccess) => {
     if(pristine.validate()) {
       blockSubmitButton();
       sendData(new FormData(evt.target))
-        .then(onSuccess)
+        .then(() => {
+          onSuccess();
+          showUploadSuccess();
+        })
         .catch((err) => {
-          showAlert(err.message);
+          showUploadError(err.message);
         })
         .finally(unblockSubmitButton);
     }
   });
 };
 
-export { setPhotoSubmit, openImgLoader, closeImgLoader };
+export { setPhotoSubmit, openImgLoader, closeImgLoader, showUploadSuccess };
