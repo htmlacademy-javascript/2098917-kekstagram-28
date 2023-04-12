@@ -217,8 +217,10 @@ const setPhotoSubmit = (onSuccess) => {
     if(pristine.validate()) {
       blockSubmitButton();
       sendData(new FormData(evt.target))
-        .then(onSuccess)
-        .then(showUploadSuccess)
+        .then(() => {
+          onSuccess();
+          showUploadSuccess();
+        })
         .catch((err) => {
           showUploadError(err.message);
         })
