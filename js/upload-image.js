@@ -145,16 +145,6 @@ const getImage = () => {
 imgInput.addEventListener('change', getImage);
 
 // Открытие/закрытие окна об успешной загрузке фото
-const removeSuccessFragment = () => {
-  const findFragment = document.querySelector('.success');
-  findFragment.remove();
-};
-
-const onCloseSuccess = () => {
-  const successCloseBtn = document.querySelector('.success__button');
-  successCloseBtn.addEventListener('click', removeSuccessFragment);
-};
-
 const onSuccessEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
@@ -162,30 +152,30 @@ const onSuccessEscKeydown = (evt) => {
   }
 };
 
+function onClickAwaySuccess (evt) {
+  const windowSuccess = document.querySelector('.success');
+  if(evt.target === windowSuccess) {
+    removeSuccessFragment();
+  }
+}
+
+function removeSuccessFragment () {
+  const findFragment = document.querySelector('.success');
+  document.querySelector('.success__button').removeEventListener('click', removeSuccessFragment);
+  document.removeEventListener('keydown', onSuccessEscKeydown);
+  document.removeEventListener('click', onClickAwaySuccess);
+  findFragment.remove();
+}
+
 const showUploadSuccess = () => {
   const successWindow = successTemplate.cloneNode(true);
   bodyTag.appendChild(successWindow);
-  onCloseSuccess();
+  document.querySelector('.success__button').addEventListener('click', removeSuccessFragment);
   document.addEventListener('keydown', onSuccessEscKeydown);
-  document.addEventListener('click', (evt) => {
-    const windowSuccess = document.querySelector('.success');
-    if(evt.target === windowSuccess) {
-      removeSuccessFragment();
-    }
-  });
+  document.addEventListener('click', onClickAwaySuccess);
 };
 
 // Открытие/закрытие окна об ошибке загрузки фото
-const removeErrorFragment = () => {
-  const findFragment = document.querySelector('.error');
-  findFragment.remove();
-};
-
-const onCloseError = () => {
-  const errorCloseBtn = document.querySelector('.error__button');
-  errorCloseBtn.addEventListener('click', removeErrorFragment);
-};
-
 const onErrorEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
@@ -193,18 +183,30 @@ const onErrorEscKeydown = (evt) => {
   }
 };
 
+function onClickAwayError (evt) {
+  const windowError = document.querySelector('.error');
+  if(evt.target === windowError) {
+    removeErrorFragment();
+  }
+}
+
+function removeErrorFragment () {
+  const findFragment = document.querySelector('.error');
+  document.querySelector('.error__button').removeEventListener('click', removeErrorFragment);
+  document.removeEventListener('keydown', onErrorEscKeydown);
+  document.removeEventListener('click', onClickAwayError);
+  document.addEventListener('keydown', onImgLoaderEscKeydown);
+  findFragment.remove();
+}
+
 const showUploadError = (message) => {
   const errorWindow = errorTemplate.cloneNode(true);
   errorWindow.querySelector('.error__text').textContent = message;
   bodyTag.appendChild(errorWindow);
-  onCloseError();
+  document.querySelector('.error__button').addEventListener('click', removeErrorFragment);
   document.addEventListener('keydown', onErrorEscKeydown);
-  document.addEventListener('click', (evt) => {
-    const windowError = document.querySelector('.error');
-    if(evt.target === windowError) {
-      removeErrorFragment();
-    }
-  });
+  document.addEventListener('click', onClickAwayError);
+  document.removeEventListener('keydown', onImgLoaderEscKeydown);
 };
 
 // Отправка фото
