@@ -11,17 +11,17 @@ const getRandomInteger = (min, max) => {
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
 function createUniqueId (min, max) {
-  const idArray = [];
+  const ids = [];
 
   return function () {
     let singleId = getRandomInteger(min, max);
-    if (idArray.length >= (max - min + 1)) {
+    if (ids.length >= (max - min + 1)) {
       return null;
     }
-    while(idArray.includes(singleId)) {
+    while(ids.includes(singleId)) {
       singleId = getRandomInteger(min, max);
     }
-    idArray.push(singleId);
+    ids.push(singleId);
     return singleId;
   };
 }
